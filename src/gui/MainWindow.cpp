@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2004-2014 Tobias Doerffel <tobydox/at/users.sourceforge.net>
  *
- * This file is part of LMMS - http://lmms.io
+ * This file is part of LMMS - https://lmms.io
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -893,6 +893,10 @@ void MainWindow::updateRecentlyOpenedProjectsMenu()
 		{
 			m_recentlyOpenedProjectsMenu->addAction(
 					embed::getIconPixmap( "project_file" ), *it );
+#ifdef LMMS_BUILD_APPLE
+			m_recentlyOpenedProjectsMenu->actions().last()->setIconVisibleInMenu(false); // QTBUG-44565 workaround
+			m_recentlyOpenedProjectsMenu->actions().last()->setIconVisibleInMenu(true);
+#endif
 			shownInMenu++;
 			if( shownInMenu >= 15 )
 			{
@@ -1482,6 +1486,10 @@ void MainWindow::fillTemplatesMenu()
 		m_templatesMenu->addAction(
 					embed::getIconPixmap( "project_file" ),
 					( *it ).left( ( *it ).length() - 4 ) );
+#ifdef LMMS_BUILD_APPLE
+		m_templatesMenu->actions().last()->setIconVisibleInMenu(false); // QTBUG-44565 workaround
+		m_templatesMenu->actions().last()->setIconVisibleInMenu(true);
+#endif
 	}
 
 	QDir d( ConfigManager::inst()->factoryProjectsDir() + "templates" );
@@ -1499,6 +1507,10 @@ void MainWindow::fillTemplatesMenu()
 		m_templatesMenu->addAction(
 					embed::getIconPixmap( "project_file" ),
 					( *it ).left( ( *it ).length() - 4 ) );
+#ifdef LMMS_BUILD_APPLE
+		m_templatesMenu->actions().last()->setIconVisibleInMenu(false); // QTBUG-44565 workaround
+		m_templatesMenu->actions().last()->setIconVisibleInMenu(true);
+#endif
 	}
 }
 
@@ -1529,9 +1541,11 @@ void MainWindow::browseHelp()
 
 void MainWindow::autoSave()
 {
-	if( !( Engine::getSong()->isPlaying() ||
-			Engine::getSong()->isExporting() ||
-				QApplication::mouseButtons() ) )
+	if( !Engine::getSong()->isExporting() &&
+		!QApplication::mouseButtons() &&
+			( ConfigManager::inst()->value( "ui",
+					"enablerunningautosave" ).toInt() ||
+				! Engine::getSong()->isPlaying() ) )
 	{
 		Engine::getSong()->saveProjectFile(ConfigManager::inst()->recoveryFile());
 		autoSaveTimerReset();  // Reset timer

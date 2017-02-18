@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2004-2014 Tobias Doerffel <tobydox/at/users.sourceforge.net>
  *
- * This file is part of LMMS - http://lmms.io
+ * This file is part of LMMS - https://lmms.io
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -86,6 +86,9 @@ FileBrowser::FileBrowser(const QString & directories, const QString & filter,
 	opl->setSpacing( 0 );
 
 	m_filterEdit = new QLineEdit( ops );
+#if QT_VERSION >= 0x050000
+	m_filterEdit->setClearButtonEnabled( true );
+#endif
 	connect( m_filterEdit, SIGNAL( textEdited( const QString & ) ),
 			this, SLOT( filterItems( const QString & ) ) );
 

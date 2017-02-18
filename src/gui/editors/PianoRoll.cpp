@@ -5,7 +5,7 @@
  * Copyright (c) 2004-2014 Tobias Doerffel <tobydox/at/users.sourceforge.net>
  * Copyright (c) 2008 Andrew Kelley <superjoe30/at/gmail/dot/com>
  *
- * This file is part of LMMS - http://lmms.io
+ * This file is part of LMMS - https://lmms.io
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -81,6 +81,7 @@ typedef AutomationPattern::timeMap timeMap;
 
 
 // some constants...
+const int INITIAL_PIANOROLL_WIDTH = 860;
 const int INITIAL_PIANOROLL_HEIGHT = 480;
 
 const int SCROLLBAR_SIZE = 12;
@@ -4374,7 +4375,7 @@ void PianoRollWindow::loadSettings( const QDomElement & de )
 
 QSize PianoRollWindow::sizeHint() const
 {
-	return { m_toolBar->sizeHint().width() + 10, INITIAL_PIANOROLL_HEIGHT };
+	return { INITIAL_PIANOROLL_WIDTH, INITIAL_PIANOROLL_HEIGHT };
 }
 
 
